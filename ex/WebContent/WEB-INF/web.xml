@@ -19,6 +19,10 @@
   	<param-value>1010</param-value>
   </context-param>
   
+<!--   <listener> -->
+<!--   	<listener-class>com.nextwin.ex.ContextListenerEx</listener-class> -->
+<!--   </listener> -->
+  
 <!--   <servlet> -->
 <!--   	<servlet-name>InitParam</servlet-name> -->
 <!--   	<servlet-class>com.nextwin.ex.InitParam</servlet-class> -->
