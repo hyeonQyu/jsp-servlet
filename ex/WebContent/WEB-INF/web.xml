@@ -10,6 +10,15 @@
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
   
+  <context-param>
+  	<param-name>id</param-name>
+  	<param-value>dhk</param-value>
+  </context-param>
+  <context-param>
+  	<param-name>pw</param-name>
+  	<param-value>1010</param-value>
+  </context-param>
+  
 <!--   <servlet> -->
 <!--   	<servlet-name>InitParam</servlet-name> -->
 <!--   	<servlet-class>com.nextwin.ex.InitParam</servlet-class> -->
