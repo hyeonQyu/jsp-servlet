@@ -15,10 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class LoginOk
+ * Servlet implementation class ModifyOk
  */
-@WebServlet("/LoginOk")
-public class LoginOk extends HttpServlet {
+@WebServlet("/ModifyOk")
+public class ModifyOk extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private String driver = "oracle.jdbc.driver.OracleDriver";
@@ -30,12 +30,14 @@ public class LoginOk extends HttpServlet {
 	private Statement statement;
 	ResultSet resultSet;
 	
+	HttpSession httpSession;
+	
 	private String name, id, pw, phone1, phone2, phone3, gender;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LoginOk() {
+    public ModifyOk() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -57,53 +59,59 @@ public class LoginOk extends HttpServlet {
 	}
 	
 	private void actionDo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-		id = request.getParameter("id");
+		request.setCharacterEncoding("UTF-8");
+		httpSession = request.getSession();
+		
+		name = request.getParameter("name");
+		id = (String)httpSession.getAttribute("id");
 		pw = request.getParameter("pw");
+		phone1 = request.getParameter("phone1");
+		phone2 = request.getParameter("phone2");
+		phone3 = request.getParameter("phone3");
+		gender = request.getParameter("gender");
 		
-		String query = "select * from member where id = '" + id + "' and pw = '" + pw +"'";
-		
-		try {
-			Class.forName(driver);	// oracle.jdbc.driver.OracleDriver
-			connection = DriverManager.getConnection(url, uid, upw);	// jdbc:oracle:thin:@localhost:1521:xe
-			statement = connection.createStatement();
-			resultSet = statement.executeQuery(query);
+		if(pwConfirm()) {
+			String query = "update member set name = '" + name + "', phone1 = '" + phone1 + "', phone2 = '" + phone2
+							+ "', phone3 = '" + phone3 + "', gender = '" + gender + "' where id = '" + id + "'";
+			System.out.println("query: " + query);
 			
-			// 회원 정보가 없음, 로그인 실패
-			if(!resultSet.isBeforeFirst()) {
-				System.out.println("로그인 실패");
-				response.sendRedirect("loginFail.jsp");
-			}
-			while(resultSet.next()) {
-				name = resultSet.getString("name");
-				id = resultSet.getString("id");
-				pw = resultSet.getString("pw");
-				phone1 = resultSet.getString("phone1");
-				phone2 = resultSet.getString("phone2");
-				phone3 = resultSet.getString("phone3");
-				gender = resultSet.getString("gender");
-			}
-			
-			HttpSession httpSession = request.getSession();
-			httpSession.setAttribute("name", name);
-			httpSession.setAttribute("id", id);
-			httpSession.setAttribute("pw", pw);
-			
-			response.sendRedirect("loginResult.jsp");
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-		finally {
 			try {
-				if(resultSet != null)
-					resultSet.close();
-				if(statement != null)
-					statement.close();
-				if(connection != null)
-					connection.close();
+				Class.forName(driver);
+				connection = DriverManager.getConnection(url, uid, upw);
+				statement = connection.createStatement();
+				int i = statement.executeUpdate(query);
+				
+				if(i == 1) {
+					System.out.println("Update success");
+					httpSession.setAttribute("name", name);
+					response.sendRedirect("modifyResult.jsp");
+				}
+				else {
+					System.out.println("Update fail");
+					response.sendRedirect("modify.jsp");
+				}
 			}
-			catch(SQLException e) {}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+			finally {
+				try {
+					if(statement != null)
+						statement.close();
+					if(connection != null)
+						connection.close();
+				}
+				catch(SQLException e) {}
+			}
 		}
+	}
+	
+	private boolean pwConfirm() {
+		String sessionPw = (String)httpSession.getAttribute("pw");
+		
+		if(sessionPw.equals(pw))
+			return true;
+		return false;
 	}
 
 }

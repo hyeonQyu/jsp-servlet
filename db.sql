@@ -9,3 +9,5 @@ create table member(
 );
 
 commit;
+
+update member set name = '±è¿µ¹Ì', phone1 = '010', phone2 = '1234', phone3 = '1234', gender = 'woman' where id = 'ym1010'; 
