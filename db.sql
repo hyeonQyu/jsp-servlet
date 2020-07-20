@@ -18,3 +18,12 @@ create table memberforpre (
     pw varchar2(20),
     phone varchar(20)
 );
+
+create table members(
+    id varchar2(20),
+    pw varchar2(20),
+    name varchar2(20),
+    eMail varchar2(20),
+    rDate date,
+    address varchar2(50)
+);
