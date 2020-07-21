@@ -27,3 +27,5 @@ create table members(
     rDate date,
     address varchar2(50)
 );
+
+delete from members where name='È«±æÂ¬';
