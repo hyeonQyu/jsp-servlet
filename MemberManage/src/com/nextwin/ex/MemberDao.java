@@ -19,6 +19,7 @@ public class MemberDao {
 	public static final int MEMBER_LOGIN_PW_FAIL = 0;
 	public static final int MEMBER_LOGIN_SUCCESS = 1;
 	public static final int MEMBER_LOGIN_IS_NOT = -1;
+	public static final int MEMBER_MODIFY_SUCCESS = 1;
 		
 	private static MemberDao instance = new MemberDao();
 	
@@ -51,6 +52,40 @@ public class MemberDao {
 			ri = MEMBER_JOIN_SUCCESS;
 		} catch (Exception e) {
 			ri = MEMBER_JOIN_FAIL;
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pstmt != null)
+					pstmt.close();
+				if(con != null)
+					con.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return ri;
+	}
+	
+	public int modifyMember(MemberDto dto) {
+		int ri = 0;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = "update members set pw = ?, eMail = ?, address = ? where id = ?";
+		
+		try {
+			con = getConnection();
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setString(1, dto.getPw());
+			pstmt.setString(2, dto.geteMail());
+			pstmt.setString(3, dto.getAddress());
+			pstmt.setString(4, dto.getId());
+			
+			ri = pstmt.executeUpdate();
+			System.out.println(dto.getId() + " " + dto.getName());
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			try {

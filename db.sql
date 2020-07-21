@@ -29,3 +29,5 @@ create table members(
 );
 
 delete from members where name='È«±æÂ¬';
+
+update members set pw = '1111', eMail = 'newnew@naver.com' where id = 'newone';
