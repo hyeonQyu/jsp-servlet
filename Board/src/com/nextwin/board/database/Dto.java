@@ -1,6 +1,6 @@
 package com.nextwin.board.database;
 
-import com.sun.jmx.snmp.Timestamp;
+import java.sql.Timestamp;
 
 public class Dto {
 

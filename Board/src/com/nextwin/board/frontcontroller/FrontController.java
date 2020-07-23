@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.nextwin.board.command.Command;
+import com.nextwin.board.command.ContentCommand;
+import com.nextwin.board.command.ListCommand;
 
 /**
  * Servlet implementation class FrontController
@@ -53,13 +55,15 @@ public class FrontController extends HttpServlet {
 		String com = uri.substring(path.length());
 		
 		if(com.equals("/write_view.do")) {
-			
+
 		} else if(com.equals("/write.do")) {
 			
 		} else if(com.equals("/list.do")) {
-			
+			command = new ListCommand();
+			command.execute(request, response);
+			viewPage = "list.jsp";
 		} else if(com.equals("/content_view.do")) {
-			
+
 		} else if(com.equals("/modify.do")) {
 			
 		} else if(com.equals("/delete.do")) {
