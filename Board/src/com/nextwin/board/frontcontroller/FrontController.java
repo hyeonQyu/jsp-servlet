@@ -63,7 +63,9 @@ public class FrontController extends HttpServlet {
 			command.execute(request, response);
 			viewPage = "list.jsp";
 		} else if(com.equals("/content_view.do")) {
-
+			command = new ContentCommand();
+			command.execute(request, response);
+			viewPage = "content_view.jsp";
 		} else if(com.equals("/modify.do")) {
 			
 		} else if(com.equals("/delete.do")) {

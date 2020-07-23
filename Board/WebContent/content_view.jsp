@@ -4,13 +4,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>${content_view.title}</title>
 </head>
 <body>
 
 	<table width="500" cellpadding="0" cellspacing="0" border="1">
 		<form action="modify.do" method="post">
-			<input type="hidden" name="id" value="${content_view.bid}">
+			<input type="hidden" name="id" value="${content_view.id}">
 			<tr>
 				<td>번호</td>
 				<td>${content_view.id}</td>

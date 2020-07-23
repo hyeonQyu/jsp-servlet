@@ -66,5 +66,49 @@ public class Dao {
 		
 		return dtos;
 	}
+	
+	public Dto getContentView(String id) {
+		Dto dto = null;
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		
+		try {
+			connection = dataSource.getConnection();
+			String sql = "select * from mvc_board where bId = ?";
+			preparedStatement = connection.prepareStatement(sql);
+			
+			preparedStatement.setString(1, id);
+			resultSet = preparedStatement.executeQuery();
+			
+			while(resultSet.next()) {
+				String name = resultSet.getString("bName");
+				String title = resultSet.getString("bTitle");
+				String content = resultSet.getString("bContent");
+				Timestamp date = resultSet.getTimestamp("bDate");
+				int hit = resultSet.getInt("bHit");
+				int group = resultSet.getInt("bGroup");
+				int step = resultSet.getInt("bStep");
+				int indent = resultSet.getInt("bIndent");
+				
+				dto = new Dto(Integer.parseInt(id), name, title, content, date, hit, group, step, indent);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(resultSet != null)
+					resultSet.close();
+				if(preparedStatement != null)
+					preparedStatement.close();
+				if(connection != null)
+					connection.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return dto;
+	}
 
 }
