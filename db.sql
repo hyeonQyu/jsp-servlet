@@ -31,3 +31,22 @@ create table members(
 delete from members where name='홍길짭';
 
 update members set pw = '1111', eMail = 'newnew@naver.com' where id = 'newone';
+
+create table mvc_board(
+    bId number(4) primary key,
+    bName varchar2(20),
+    bTitle varchar2(100),
+    bContent varchar2(300),
+    bDate date default sysdate,
+    bHit number(4) default 0,
+    bGroup number(4),
+    bStep number(4),
+    bIndent number(4)
+);
+-- id값을 자동으로 증가시키기 위함
+create sequence mvc_board_seq;
+
+insert into mvc_board (bId, bName, bTitle, bContent, bHit, bGroup, bStep, bIndent)
+values (mvc_board_seq.nextval, 'admin', 'test title', 'test content', 0, mvc_board_seq.currval, 0, 0);
+
+commit;
