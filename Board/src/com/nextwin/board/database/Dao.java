@@ -110,5 +110,33 @@ public class Dao {
 		
 		return dto;
 	}
+	
+	public void modify(Dto dto) {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		
+		try {
+			connection = dataSource.getConnection();
+			String sql = "update mvc_board set bTitle = ?, bContent = ? where bId = ?";
+			preparedStatement = connection.prepareStatement(sql);
+			
+			preparedStatement.setString(1, dto.getTitle());
+			preparedStatement.setString(2, dto.getContent());
+			preparedStatement.setInt(3, dto.getId());
+			
+			preparedStatement.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(preparedStatement != null)
+					preparedStatement.close();
+				if(connection != null)
+					connection.close();				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 }

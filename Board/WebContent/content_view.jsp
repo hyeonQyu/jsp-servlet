@@ -21,7 +21,7 @@
 			</tr>
 			<tr>
 				<td>이름</td>
-				<td><input type="text" name="name" value="${content_view.name}"></td>
+				<td>${content_view.name}></td>
 			</tr>
 			<tr>
 				<td>제목</td>
