@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.nextwin.board.command.Command;
 import com.nextwin.board.command.ContentCommand;
+import com.nextwin.board.command.DeleteCommand;
 import com.nextwin.board.command.ListCommand;
 import com.nextwin.board.command.ModifyCommand;
 import com.nextwin.board.command.WriteCommand;
@@ -75,7 +76,9 @@ public class FrontController extends HttpServlet {
 			command.execute(request, response);
 			viewPage = "list.do";
 		} else if(com.equals("/delete.do")) {
-			
+			command = new DeleteCommand();
+			command.execute(request, response);
+			viewPage = "list.do";
 		} else if(com.equals("/reply_view.do")) {
 			
 		} else if(com.equals("/reply.do")) {

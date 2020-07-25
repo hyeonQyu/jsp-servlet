@@ -167,5 +167,31 @@ public class Dao {
 			}
 		}
 	}
+	
+	public void delete(int id) {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		
+		try {
+			connection = dataSource.getConnection();
+			String sql = "delete from mvc_board where bId=?";
+			preparedStatement = connection.prepareStatement(sql);
+			
+			preparedStatement.setInt(1, id);
+			
+			preparedStatement.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(preparedStatement != null)
+					preparedStatement.close();
+				if(connection != null)
+					connection.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 }
