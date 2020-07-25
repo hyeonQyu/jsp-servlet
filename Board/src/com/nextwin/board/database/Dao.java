@@ -220,5 +220,102 @@ public class Dao {
 			}
 		}
 	}
+	
+	public Dto getReplyView(int id) {
+		Dto dto = null;
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		
+		try {
+			connection = dataSource.getConnection();
+			String sql = "select * from mvc_board where bId=?";
+			preparedStatement = connection.prepareStatement(sql);
+			
+			preparedStatement.setInt(1, id);
+			
+			resultSet = preparedStatement.executeQuery();
+			if(resultSet.next()) {
+				id = resultSet.getInt("bId");
+				String name = resultSet.getString("bName");
+				String title = resultSet.getString("bTitle");
+				String content = resultSet.getString("bContent");
+				Timestamp date = resultSet.getTimestamp("bDate");
+				int hit = resultSet.getInt("bHit");
+				int group = resultSet.getInt("bGroup");
+				int step = resultSet.getInt("bStep");
+				int indent = resultSet.getInt("bIndent");
+				
+				dto = new Dto(id, name, title, content, date, hit, group, step, indent);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			
+		}
+		
+		return dto;
+	}
+	
+	public void reply(Dto dto) {
+		replyShape(dto.getGroup(), dto.getStep());
+		
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		
+		try {
+			connection = dataSource.getConnection();
+			String sql = "insert into mvc_board (bId, bName, bTitle, bContent, bGroup, bStep, bIndent) "
+					+ "values (mvc_board_seq.nextval, ?, ?, ?, ?, ?, ?)";
+			preparedStatement = connection.prepareStatement(sql);
+			
+			preparedStatement.setString(1, dto.getName());
+			preparedStatement.setString(2, dto.getTitle());
+			preparedStatement.setString(3, dto.getContent());
+			preparedStatement.setInt(4, dto.getGroup());
+			preparedStatement.setInt(5, dto.getStep() + 1);
+			preparedStatement.setInt(6, dto.getIndent() + 1);
+			
+			preparedStatement.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(preparedStatement != null)
+					preparedStatement.close();
+				if(connection != null)
+					connection.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private void replyShape(int group, int step) {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		
+		try {
+			connection = dataSource.getConnection();
+			String sql = "update mvc_board set bStep=bStep+1 where bGroup=? and bStep>?";
+			preparedStatement = connection.prepareStatement(sql);
+			
+			preparedStatement.setInt(1, group);
+			preparedStatement.setInt(2, step);
+			
+			preparedStatement.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(preparedStatement != null)
+					preparedStatement.close();
+				if(connection != null)
+					connection.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 }

@@ -14,6 +14,8 @@ import com.nextwin.board.command.ContentCommand;
 import com.nextwin.board.command.DeleteCommand;
 import com.nextwin.board.command.ListCommand;
 import com.nextwin.board.command.ModifyCommand;
+import com.nextwin.board.command.ReplyCommand;
+import com.nextwin.board.command.ReplyViewCommand;
 import com.nextwin.board.command.WriteCommand;
 
 /**
@@ -80,9 +82,13 @@ public class FrontController extends HttpServlet {
 			command.execute(request, response);
 			viewPage = "list.do";
 		} else if(com.equals("/reply_view.do")) {
-			
+			command = new ReplyViewCommand();
+			command.execute(request, response);
+			viewPage = "reply_view.jsp";
 		} else if(com.equals("/reply.do")) {
-			
+			command = new ReplyCommand();
+			command.execute(request, response);
+			viewPage = "list.do";
 		}
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
