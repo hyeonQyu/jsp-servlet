@@ -15,6 +15,7 @@ public class ContentCommand implements Command {
 		Dto dto = dao.getContentView(id);
 		
 		request.setAttribute("content_view", dto);
+		dao.upHit(dto);
 	}
 
 }

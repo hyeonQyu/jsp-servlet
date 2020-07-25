@@ -193,5 +193,32 @@ public class Dao {
 			}
 		}
 	}
+	
+	public void upHit(Dto dto) {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		
+		try {
+			connection = dataSource.getConnection();
+			String sql = "update mvc_board set bHit=? where bId=?";
+			preparedStatement = connection.prepareStatement(sql);
+			
+			preparedStatement.setInt(1, dto.getHit() + 1);
+			preparedStatement.setInt(2, dto.getId());
+			
+			preparedStatement.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(preparedStatement != null)
+					preparedStatement.close();
+				if(connection != null)
+					connection.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 }
